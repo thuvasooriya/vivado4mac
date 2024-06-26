@@ -1,1 +1,11 @@
 .DS_Store
+*.bin
+installer/
+.cache/
+.java/
+.Xil/
+.Xilinx/
+projects/
+Xilinx/
+*.jou
+*.log

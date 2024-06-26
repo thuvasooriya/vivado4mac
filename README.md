@@ -1,37 +1,67 @@
-# vivado-on-silicon-mac
-This is a tool for installing [Xilinx Vivado™](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html) on Arm®-based Apple silicon Macs (Tested on M2 MacBook Air with 2022 Edition of Vivado). It is in no way associated with Xilinx.
+# vivado4mac
 
-## How to install
-Expect the installation process to last about one to two hours and download ~20 GB.
-### Preparations
-You first need to install [XQuartz](https://www.xquartz.org/) and [Docker®](https://www.docker.com/products/docker-desktop/) (make sure to choose "Apple Chip" instead of "Intel Chip"). Then you need to
-* open Docker, 
-* go to settings,
-* check "Use Virtualization Framework",
-* uncheck "Open Docker Dashboard at startup",
-* go to "Resources"
-* increase Swap to 2GB (if synthesis fails, you may need to increase Memory or Swap)
-* go to "Features in Development" and
-* check "Use Rosetta for x86/amd64 emulation on Apple Silicon".
+this is a tool for installing [Xilinx Vivado™](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html) on Arm®-based Apple silicon Macs (Tested on M2 MacBook Air with 2022 Edition of Vivado). It is in no way associated with Xilinx.
 
-These steps cannot be skipped.
+this repo is a fork of that tool focused on optimizing the workflow using orbstack as the docker client
 
-Additionally make sure to download the *Linux Self Extracting Web Installer* from the [Xilinx Website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html).
-### Installation
-1. Download this [tool](https://github.com/ichi4096/vivado-on-silicon-mac/archive/refs/heads/main.zip).
-2. Extract the ZIP by double-clicking it.
-Open a terminal. Then copy & paste:
-```
-cd Downloads/vivado-on-silicon-mac-main
+## roadmap
+
+- [ ] add support for other versions of vivado
+- [ ] explore efficient use of docker container using nix tools
+- [ ] add support for mac file sync using orbstack
+- [ ] streamline the installation process
+- [ ] xquartz optimization for docker
+- [ ] customize downloads and resume support
+
+## how to install
+
+expect the installation process to last about one to two hours and download ~20 gb.
+
+### prerequisites
+
+1. you'll need docker installed with a compatible docker client. this tool uses orbstack as the docker client. You can install orbstack using homebrew or nix or whatever method you prefer.
+2. you'll need to install [xquartz](https://www.xquartz.org/). you can install xquartz using homebrew or nix or whatever method you prefer.
+
+- if you are using [docker desktop](https://www.docker.com/products/docker-desktop/) better to follow the original repo instructions.
+
+3. configure docker
+
+- enable rosetta and increase the memory slider in orbstack
+
+if using docker desktop
+
+- go to settings,
+- check "Use Virtualization Framework",
+- uncheck "Open Docker Dashboard at startup",
+- go to "Resources"
+- increase Swap to 2GB (if synthesis fails, you may need to increase Memory or Swap)
+- go to "Features in Development" and
+- check "Use Rosetta for x86/amd64 emulation on Apple Silicon".
+
+additionally make sure to download the _linux self extracting web installer_ from the [xilinx website](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html).
+
+> only 2023.1 is supported for now
+> note down the email and password you use for authentication during installation
+
+### installation
+
+1. clone this repo or download the source code
+2. extract the zip by double-clicking it.
+3. navigate to the extracted folder in terminal and run the installer
+
+```sh
+cd Downloads/vivado4mac
 caffeinate -dim ./install.sh
 ```
-3. Follow the instructions (in yellow) from the terminal. If a window pops up, close it.
-4. Open the Launch_Vivado app. It will fail to launch, which is why you need to open Settings and trust the app in the "Privacy & Security" section.
-5. Open it again and go to Settings again and trust xvcd.
-6. Close Vivado.
-7. Drag and drop the "Launch_Vivado" App into the Applications folder.
 
-### Usage
+3. follow the instructions (in yellow) from the terminal. if a window pops up, close it.
+4. Open the Launch_Vivado app. It will fail to launch, which is why you need to open Settings and trust the app in the "Privacy & Security" section.
+5. open it again and go to settings again and trust xvcd.
+6. close vivado.
+7. drag and drop the "Launch_Vivado" app into the applications folder.
+
+### usage
+
 To start Vivado, simply open the Launch_Vivado app. It might take a while for the Docker container to start in the background and for Vivado to launch. Additionally, a terminal window will launch. It runs the XVC server as described below and is necessary for programming the FPGAs and closes when Vivado is closed.
 
 If you want to exchange files with the Vivado instance, you need to store them inside the "vivado-on-silicon-mac-main" folder. Inside Vivado, the files will be accessible via the "/home/user" folder.
@@ -41,10 +71,13 @@ Clipboard copy & paste works with Ctrl-C and Ctrl-V.
 You can allocate more/less memory and CPU resources to Vivado by going to the Resources tab in the Docker settings.
 
 ## How it works
+
 ### Docker & XQuartz
+
 This script creates an x64 Docker container running Linux® that is accelerated by [Rosetta 2](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) via the Apple Virtualization framework. The container has all the necessary libraries preinstalled for running Vivado. It is installed automatically given an installer file that the user must provide. GUI functionality is provided by XQuartz.
 
 ### USB connection
+
 A drawback of the Apple Virtualization framework is that there is no implementation for USB forwarding as of when I'm writing this. Therefore, these scripts set up the [Xilinx Virtual Cable protocol](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/644579329/Xilinx+Virtual+Cable). Intended to let a computer connect to an FPGA plugged into a remote computer, it allows for the host system to run an XVC server (in this case a software called [xvcd](https://github.com/tmbinc/xvcd) by Felix Domke), to which the docker container can connect.
 
 xvcd is contained in this repository, but with slight changes to make it compile on modern day macOS (compilation requires libusb and libftdi installed via homebrew, though there is a compiled version included). It runs continuously while the docker container is running.
@@ -52,12 +85,14 @@ xvcd is contained in this repository, but with slight changes to make it compile
 This version of xvcd only supports the FT2232C chip. There are forks of this software supporting other boards such as [xvcserver by Xilinx](https://github.com/Xilinx/XilinxVirtualCable).
 
 ### Environment variables
+
 A few environment variables are set such that
 
 1. the GUI is displayed correctly.
 2. Vivado doesn't crash (maybe due to emulation?)
 
 ## License, copyright and trademark information
+
 The repository's contents are licensed under the Creative Commons Zero v1.0 Universal license.
 
 Note that the scripts are configured such that you automatically agree to Xilinx' and 3rd party EULAs (which can be obtained by extracting the installer yourself) by running them. You also automatically agree to [Apple's software licence agreement](https://www.apple.com/legal/sla/) for Rosetta 2.

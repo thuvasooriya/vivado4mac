@@ -15,18 +15,18 @@ if ! ping -q -c1 google.com &>/dev/null
 fi
 
 # check if Docker is installed
-if ! [ -d "/Applications/Docker.app" ]
-	then
-		f_echo "You need to install Docker first."
-		exit 1
-fi
+# if ! [ -d "/Applications/Docker.app" ]
+# 	then
+# 		f_echo "You need to install Docker first."
+# 		exit 1
+# fi
 
 # check if XQuartz is installed
-if ! [ -d "/Applications/Utilities/XQuartz.app" ]
-	then
-		f_echo "You need to install XQuartz first."
-		exit 1
-fi
+# if ! [ -d "/Applications/Utilities/XQuartz.app" ]
+# 	then
+# 		f_echo "You need to install XQuartz first."
+# 		exit 1
+# fi
 
 # change XQuartz settings, otherwise no X11 connection from container possible
 defaults write org.xquartz.X11 no_auth 1
@@ -51,13 +51,27 @@ f_echo "Building Docker image"
 docker build -t x64-linux .
 
 # Copy Vivado installation file into $script_dir
-installation_binary=""
-while ! [[ $installation_binary == *.bin ]]
-do
-	f_echo "Drag and drop the installation binary into this terminal window and press Enter: "
-	read installation_binary
-done
-cp $installation_binary $script_dir
+# installation_binary=""
+# while ! [[ $installation_binary == *.bin ]]
+# do
+# 	f_echo "Drag and drop the installation binary into this terminal window and press Enter: "
+# 	read installation_binary
+# done
+# cp $installation_binary $script_dir
+
+# Copy Vivado installation file into $script_dir if it is not already there
+found_installation_binary=$(find $script_dir -name "*.bin")
+if [ -z "$found_installation_binary" ]; then
+	installation_binary=""
+	while ! [[ $installation_binary == *.bin ]]
+	do
+		f_echo "Drag and drop the installation binary into this terminal window and press Enter: "
+		read installation_binary
+	done
+	cp $installation_binary $script_dir
+else
+	f_echo "Found installation binary"
+fi
 
 # Running install script in docker container
 f_echo "Launching Docker container and installation script"
