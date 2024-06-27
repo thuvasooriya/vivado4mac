@@ -1,17 +1,30 @@
 # vivado4mac
 
-this is a tool for installing [Xilinx Vivado™](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html) on Arm®-based Apple silicon Macs (Tested on M2 MacBook Air with 2022 Edition of Vivado). It is in no way associated with Xilinx.
+![vivado running on mac](https://i.imgur.com/6d9ymRX.png)
 
-this repo is a fork of that tool focused on optimizing the workflow using orbstack as the docker client
+this is a tool for installing [Xilinx Vivado™](https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools.html) on arm-based apple silicon macs (tested on m3 macbook pro with 2023.1 edition of vivado). it is in no way associated with xilinx.
+
+this repo is a fork of that tool focused on optimizing the workflow using orbstack as the docker client and optimizations for other footguns
 
 ## roadmap
 
+- [x] vivado 2023.1 setup for orbstack
+- [ ] automatic xquartz configuration setup
+- [ ] automate email password of installation procedure
+- [ ] download resume support
+- [ ] build out a more efficient docker container and host it on dockerhub
+
+- [ ] xquartz optimization for docker
+- [ ] add support for mac file sync using orbstack
+- [ ] customize downloads and resume support
 - [ ] add support for other versions of vivado
 - [ ] explore efficient use of docker container using nix tools
-- [ ] add support for mac file sync using orbstack
-- [ ] streamline the installation process
-- [ ] xquartz optimization for docker
-- [ ] customize downloads and resume support
+
+## feature map
+need to test whats working and what's not
+- [x] synthesis
+- [x] implementation
+- [ ] route and place
 
 ## how to install
 
@@ -42,6 +55,7 @@ additionally make sure to download the _linux self extracting web installer_ fro
 
 > only 2023.1 is supported for now
 > note down the email and password you use for authentication during installation
+> go to xquatrz configuration > security tab > make sure both are ticked
 
 ### installation
 
@@ -55,14 +69,14 @@ caffeinate -dim ./install.sh
 ```
 
 3. follow the instructions (in yellow) from the terminal. if a window pops up, close it.
-4. Open the Launch_Vivado app. It will fail to launch, which is why you need to open Settings and trust the app in the "Privacy & Security" section.
+4. Open the Vivado app. It will fail to launch, which is why you need to open Settings and trust the app in the "Privacy & Security" section.
 5. open it again and go to settings again and trust xvcd.
 6. close vivado.
-7. drag and drop the "Launch_Vivado" app into the applications folder.
+7. drag and drop the "Vivado" app into the applications folder.
 
 ### usage
 
-To start Vivado, simply open the Launch_Vivado app. It might take a while for the Docker container to start in the background and for Vivado to launch. Additionally, a terminal window will launch. It runs the XVC server as described below and is necessary for programming the FPGAs and closes when Vivado is closed.
+To start Vivado, simply open the Vivado app. It might take a while for the Docker container to start in the background and for Vivado to launch. Additionally, a terminal window will launch. It runs the XVC server as described below and is necessary for programming the FPGAs and closes when Vivado is closed.
 
 If you want to exchange files with the Vivado instance, you need to store them inside the "vivado-on-silicon-mac-main" folder. Inside Vivado, the files will be accessible via the "/home/user" folder.
 

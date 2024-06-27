@@ -9,3 +9,5 @@ projects/
 Xilinx/
 *.jou
 *.log
+.env
+*.str
