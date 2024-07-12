@@ -9,7 +9,10 @@ this repo is a fork of that tool focused on optimizing the workflow using orbsta
 ## roadmap
 
 - [x] vivado 2023.1 setup for orbstack
-- [ ] automatic xquartz configuration setup
+- [x] automatic xquartz configuration setup - nix install issue fixed
+- [x] device_connect script separation
+- [x] smarter script to detect when docker is running to lauch vivado without delays
+- [x] ~implement a callback or monitor function to stop docker machine when closing vivado (6gigs is too much to look away (until docker dynamic memory bug in mac is fixed))~
 - [ ] automate email password of installation procedure
 - [ ] download resume support
 - [ ] build out a more efficient docker container and host it on dockerhub
@@ -21,7 +24,9 @@ this repo is a fork of that tool focused on optimizing the workflow using orbsta
 - [ ] explore efficient use of docker container using nix tools
 
 ## feature map
+
 need to test whats working and what's not
+
 - [x] synthesis
 - [x] implementation
 - [ ] route and place

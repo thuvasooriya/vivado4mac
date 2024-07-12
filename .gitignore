@@ -11,3 +11,5 @@ Xilinx/
 *.log
 .env
 *.str
+.mozilla
+proxy.txt
