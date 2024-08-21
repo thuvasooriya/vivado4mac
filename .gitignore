@@ -1,2 +1,16 @@
-.DS_Store
+**/**.DS_Store
 *.bin
+.cache/
+.config/
+.Xilinx/
+.vnc/
+Desktop/
+.dbus/
+.local/
+.java/
+installer/
+projects/**
+xilinx/
+.Xauthority
+.xsession-errors
+proxy.txt
