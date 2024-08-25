@@ -1,20 +1,20 @@
 #!/bin/zsh
 
-# Initial setup on host (macOS) side
+# initial setup on host (macos) side
 
 script_dir=$(dirname -- "$(readlink -nf $0)")
 source "$script_dir/header.sh"
-# Make sure that the script is run in macOS and not the Docker container
+# make sure that the script is run in macos and not the docker container
 validate_macos
 
-# Make sure there are no previous installations in this folder
+# make sure there are no previous installations in this folder
 # if [ -d "$script_dir/../Xilinx" ]
 # then
 # 	f_echo "A previous installation was found. To reinstall, remove the Xilinx folder."
 # 	exit 1
 # fi
 
-# Make sure permissions are right
+# make sure permissions are right
 if [[ "$current_user" == "root" ]]; then
   f_echo "do not execute this script as root."
   exit 1

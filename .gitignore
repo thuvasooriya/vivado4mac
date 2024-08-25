@@ -11,6 +11,11 @@ Desktop/
 installer/
 projects/**
 xilinx/
+
+# x11 files
 .Xauthority
 .xsession-errors
+.XIC.lock
+
+# linux generated files
 proxy.txt

@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# This script is run without root privilege
+# this script is run without root privilege
 # inside the container when it is started.
 
-script_dir=$(dirname -- "$(readlink -nf $0)";)
+script_dir=$(dirname -- "$(readlink -nf $0)")
 source "$script_dir/header.sh"
 validate_linux
 
 # generate encoded password file from plain text
-mkdir /home/user/.vnc &> /dev/null
-cat "$script_dir/vncpasswd" | vncpasswd -f > /home/user/.vnc/passwd
+mkdir /home/user/.vnc &>/dev/null
+cat "$script_dir/vncpasswd" | vncpasswd -f >/home/user/.vnc/passwd
 
-vncserver -DisconnectClients -NeverShared -nocursor -geometry $(tr -d "\n\r\t " < "$script_dir/vnc_resolution") -SecurityTypes VncAuth -PasswordFile /home/user/.vnc/passwd -localhost no -verbose -fg -RawKeyboard -RemapKeys "0xffe9->0xff7e,0xffe7->0xff7e" -- LXDE
-# explanation (see also TigerVNC manual):
+vncserver -DisconnectClients -NeverShared -nocursor -geometry $(tr -d "\n\r\t " <"$script_dir/vnc_resolution") -SecurityTypes VncAuth -PasswordFile /home/user/.vnc/passwd -localhost no -verbose -fg -RawKeyboard -RemapKeys "0xffe9->0xff7e,0xffe7->0xff7e" -- LXDE
+# explanation (see also tigervnc manual):
 #
 # -DisconnectClients -NeverShared:
 #     Only allow one connected client at a time.
@@ -55,3 +55,4 @@ vncserver -DisconnectClients -NeverShared -nocursor -geometry $(tr -d "\n\r\t " 
 #
 # -- LXDE:
 #    Starts an LXDE session.
+

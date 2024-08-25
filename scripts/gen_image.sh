@@ -1,19 +1,19 @@
 #!/bin/zsh
 
-# Generate the Docker image
+# generate the docker image
 
-script_dir=$(dirname -- "$(readlink -nf $0)";)
+script_dir=$(dirname -- "$(readlink -nf $0)")
 source "$script_dir/header.sh"
 validate_macos
 
 start_docker
 
-# Build the Docker image according to the Dockerfile
-f_echo "Building Docker image..."
-if ! docker build -t x64-linux "$script_dir"
-then
-	f_echo "Docker image generation failed!"
-	exit 1
+# build the docker image according to the dockerfile
+f_echo "building docker image..."
+if ! docker build -t x64-linux "$script_dir"; then
+  f_echo "docker image generation failed!"
+  exit 1
 fi
 
-f_echo "The Docker image was successfully generated."
+f_echo "the docker image was successfully generated."
+

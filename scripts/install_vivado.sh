@@ -31,4 +31,3 @@ else
   f_echo "An error occured during installation. Please run cleanup.sh and try again."
   exit 1
 fi
-
